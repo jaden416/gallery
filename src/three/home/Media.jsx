@@ -88,20 +88,20 @@ export default function Media({
     const viewportOffset = viewport.height / 2;
     const planeOffset = mesh.current.scale.y / 2;
     if (
-      scroll.direction === 'top' &&
+      scroll.deltaY === 'top' &&
       mesh.current.position.y - planeOffset > viewportOffset
     ) {
       extra.current -= galleryHeight.current;
 
 
     } else if (
-      scroll.direction === 'bottom' &&
+      scroll.deltaY === 'bottom' &&
       mesh.current.position.y + planeOffset < -viewportOffset
     ) {
       extra.current += galleryHeight.current;
     }
-    
-    updateY(scroll.current * stagger)
+    // if(isDown.current)
+      updateY(scroll.current)
 
   })
 

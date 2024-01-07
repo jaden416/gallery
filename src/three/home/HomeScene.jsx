@@ -71,7 +71,7 @@ export default function HomeScene() {
 
     scroll.current.target += pixelY
 
-    // velocity.current = pixelY < velocity.current ? 2 : -2
+    console.log(pixelY)
   }
 
   const onTouchDown = (event) => {
@@ -93,9 +93,8 @@ export default function HomeScene() {
 
     const distance = scroll.current.start - y
 
-    scroll.current.target = (scroll.current.position + distance ) 
+    scroll.current.target = (scroll.current.position + distance )
 
-    // velocity.current = distance < velocity.current ? 2 : -2
   }
 
   const onTouchUp = () =>{
