@@ -12,8 +12,8 @@ export default function Home() {
           <div className="absolute inset-x-[-150%] s:inset-x-[-50%] l:inset-x-[-30%] xl:inset-x-[-17.5%] top-0 grid grid-cols-6 cursor-move js-grid-bounds">
           {data.map((media, index)=>(
               <div key={index} className="relative">
-                <div className="aspect" ></div>
-                <div className="absolute inset-5 js-tile" data-src={media.src}></div>
+                <div className="aspect"  ></div>
+                <div className="absolute inset-5 js-tile " data-src={media.src}></div>
               </div>
             ))}
           </div>
