@@ -18,16 +18,16 @@ export default function Media({
   const mesh = useRef();
   const bounds = useRef();
   const galleryHeight = useRef(0)
-  const extra  = useRef(0)
+  const galleryWidth = useRef(0)
+  const extra  = useRef({
+    x:0, 
+    y:0
+  })
 
   const textureLoader = new THREE.TextureLoader();
   const texture = textureLoader.load(element.getAttribute("data-src"));
   const { size, viewport } = useThree();
 
-
-  hm =  hm % 6
-  let stagger 
-  0 === hm ? stagger = .1 : 1 === hm ? stagger = .15 : 2 === hm ? stagger = .2 : 3 === hm ? stagger = .25 : 4 === hm ? stagger  = .3 : 5 === hm ? stagger = .35 : null
 
   const shaderArgs = useMemo(()=>{
     return {
@@ -44,6 +44,7 @@ export default function Media({
   useEffect(()=> {
     const rect = element.getBoundingClientRect()
     galleryHeight.current = (galleryElement.clientHeight / size.height) * viewport.height;
+    galleryWidth.current = (galleryElement.clientWidth / size.width) * viewport.width;
 
     bounds.current = {
       left: rect.left,
@@ -54,7 +55,7 @@ export default function Media({
 
 
     updateScale()
-    extra.current = 0
+    extra.current.y = 0
 
 
     updateY()
@@ -72,12 +73,12 @@ export default function Media({
     mesh.current.scale.y = viewport.height * bounds.current.height / size.height
   }
 
-  function updateX(){
-    mesh.current.position.x = -viewport.width / 2 + (mesh.current.scale.x / 2) + (bounds.current.left / size.width) * viewport.width
+  function updateX(x = 0){
+    mesh.current.position.x = -viewport.width / 2 + (mesh.current.scale.x / 2) + ((bounds.current.left + x) / size.width) * viewport.width + extra.current.x
   }
 
-  function updateY(y = 0, stagger = 1){
-    mesh.current.position.y = (viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - (y * stagger)) / size.height) * viewport.height + extra.current) 
+  function updateY(y = 0){
+    mesh.current.position.y = viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y ) / size.height) * viewport.height + extra.current.y 
   }
 
   useFrame(()=>{
@@ -85,24 +86,43 @@ export default function Media({
 
     mesh.current.material.uniforms.uStrength.value = 0
     
-    const viewportOffset = viewport.height / 2;
-    const planeOffset = mesh.current.scale.y / 2;
-    if (
-      scroll.deltaY === 'top' &&
-      mesh.current.position.y - planeOffset > viewportOffset
-    ) {
-      extra.current -= galleryHeight.current;
+    const viewportOffset = { 
+      x : viewport.width / 2,
+      y : viewport.height / 2
+    }
+    const planeOffset = {
+      x: mesh.current.scale.x / 2,
+      y: mesh.current.scale.y / 2
+    }
 
+    if (
+      scroll.y.direction === 'top' &&
+      mesh.current.position.y - planeOffset.y > viewportOffset.y
+    ) {
+      extra.current.y -= galleryHeight.current;
+      console.log('top')
 
     } else if (
-      scroll.deltaY === 'bottom' &&
-      mesh.current.position.y + planeOffset < -viewportOffset
+      scroll.y.direction === 'bottom' &&
+      mesh.current.position.y + planeOffset.y < -viewportOffset.y
     ) {
-      extra.current += galleryHeight.current;
+      extra.current.y += galleryHeight.current;
     }
-    // if(isDown.current)
-      updateY(scroll.current)
 
+    if (
+      scroll.x.direction === 'right' &&
+      mesh.current.position.x + planeOffset.x < -viewportOffset.x
+    ) {
+      extra.current.x += galleryWidth.current;
+    } else if (
+      scroll.x.direction === 'left' &&
+      mesh.current.position.x - planeOffset.x > viewportOffset.x
+    ) {
+      extra.current.x -= galleryWidth.current;
+    }
+
+    updateY(scroll.y.current)
+    updateX(scroll.x.current)
   })
 
   return (

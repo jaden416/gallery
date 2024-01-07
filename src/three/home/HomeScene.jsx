@@ -13,13 +13,24 @@ export default function HomeScene() {
   const [visible, setVisible] = useState(false);
 
   const scroll = useRef({
-    target: 0,
-    current: 0,
-    ease: 0.1,
-    last: 0,
-    position: 0,
-    start: 0,
-    direction: 'bottom'
+      x : {
+      target: 0,
+      current: 0,
+      ease: 0.1,
+      last: 0,
+      position: 0,
+      start: 0,
+      direction: 'right'
+    },
+    y : {
+      target: 0,
+      current: 0,
+      ease: 0.1,
+      last: 0,
+      position: 0,
+      start: 0,
+      direction: 'bottom'
+    }
   })
 
   const speed = useRef({
@@ -41,59 +52,85 @@ export default function HomeScene() {
   },[])
 
   useFrame(()=>{
-    scroll.current.target -= velocity.current 
 
-    scroll.current.current = gsap.utils.interpolate(
-      scroll.current.current,
-      scroll.current.target,
-      scroll.current.ease
+    scroll.current.y.current = gsap.utils.interpolate(
+      scroll.current.y.current,
+      scroll.current.y.target,
+      scroll.current.y.ease
+    ) 
+
+    scroll.current.x.current = gsap.utils.interpolate(
+      scroll.current.x.current,
+      scroll.current.x.target,
+      scroll.current.x.ease
     ) 
     
-    speed.current.target = (scroll.current.target - scroll.current.current) * .001
+    // speed.current.target = (scroll.current.y.target - scroll.current.y.current) * .001
 
 
-    speed.current.current = gsap.utils.interpolate(
-      speed.current.current ,
-      speed.current.target,
-      speed.current.ease
-    );
+    // speed.current.current = gsap.utils.interpolate(
+    //   speed.current.current ,
+    //   speed.current.target,
+    //   speed.current.ease
+    // );
     
-    if (scroll.current.current > scroll.current.last) {
-      scroll.current.direction = 'top';
-    } else if (scroll.current.current < scroll.current.last) {
-      scroll.current.direction = 'bottom';
+    if (scroll.current.x.current > scroll.current.x.last) {
+      scroll.current.x.direction = 'left';
+    } else if (scroll.current.x.current < scroll.current.x.last) {
+      scroll.current.x.direction = 'right';
     }
-    scroll.current.last = scroll.current.current
+    scroll.current.x.last = scroll.current.x.current
+
+    if (scroll.current.y.current > scroll.current.y.last) {
+      scroll.current.y.direction = 'top';
+    } else if (scroll.current.y.current < scroll.current.y.last) {
+      scroll.current.y.direction = 'bottom';
+
+    }
+    scroll.current.y.last = scroll.current.y.current
   })
 
   const onWheel = (event) =>{
     const { pixelY } = normalizeWheel(event)
 
-    scroll.current.target += pixelY
+    scroll.current.y.target += pixelY
 
-    console.log(pixelY)
   }
 
   const onTouchDown = (event) => {
     isDown.current = true
 
-    scroll.current.position = scroll.current.current
+    scroll.current.x.position = scroll.current.x.current
+    scroll.current.y.position = scroll.current.y.current
 
-    scroll.current.start  = event.touches
+
+    scroll.current.x.start  = event.touches
+    ? event.touches[0].clientX
+    : event.clientX
+
+    scroll.current.y.start  = event.touches
       ? event.touches[0].clientY
       : event.clientY
+
+
   }
 
   const onTouchMove = (event) =>{
     if (!isDown.current) return
 
+    const x = event.touches
+    ? event.touches[0].clientX
+    : event.clientX
+    
     const y = event.touches
     ? event.touches[0].clientY
     : event.clientY
 
-    const distance = scroll.current.start - y
+    const distanceX = scroll.current.x.start - x
+    const distanceY = scroll.current.y.start - y
 
-    scroll.current.target = (scroll.current.position + distance )
+    scroll.current.x.target = (scroll.current.x.position + -distanceX)
+    scroll.current.y.target = (scroll.current.y.position + distanceY)
 
   }
 
