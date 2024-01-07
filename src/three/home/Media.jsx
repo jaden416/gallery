@@ -24,6 +24,10 @@ export default function Media({
     y:0
   })
 
+  hm =  hm % 6
+  let stagger
+  0 === hm ? stagger = 1.1 : 1 === hm ? stagger = 1.15 : 2 === hm ? stagger = 1.2 : 3 === hm ? stagger = 1.25 : 4 === hm ? stagger  = 1.3 : 5 === hm ? stagger = 1.35 : null
+
   const textureLoader = new THREE.TextureLoader();
   const texture = textureLoader.load(element.getAttribute("data-src"));
   const { size, viewport } = useThree();
@@ -55,6 +59,7 @@ export default function Media({
 
 
     updateScale()
+    extra.current.x = 0
     extra.current.y = 0
 
 
@@ -77,8 +82,8 @@ export default function Media({
     mesh.current.position.x = -viewport.width / 2 + (mesh.current.scale.x / 2) + ((bounds.current.left + x) / size.width) * viewport.width + extra.current.x
   }
 
-  function updateY(y = 0){
-    mesh.current.position.y = viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y ) / size.height) * viewport.height + extra.current.y 
+  function updateY(y = 0, stagger = 0){
+    mesh.current.position.y = viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y 
   }
 
   useFrame(()=>{
@@ -121,8 +126,8 @@ export default function Media({
       extra.current.x -= galleryWidth.current;
     }
 
-    updateY(scroll.y.current)
-    updateX(scroll.x.current)
+    updateY(scroll.y.current*1.5, stagger)
+    updateX(scroll.x.current*1.5)
   })
 
   return (

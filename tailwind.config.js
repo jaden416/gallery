@@ -16,8 +16,8 @@ export default {
 
 
     screens:{
-      'test': {'min': '0', 'max': '767px'},
-      'l':{'min': '1028px'},
+      's': {'min': '650px'},
+      'l':{'min': '1024px'},
       ...defaultTheme.screens,
       },
 

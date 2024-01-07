@@ -65,14 +65,14 @@ export default function HomeScene() {
       scroll.current.x.ease
     ) 
     
-    // speed.current.target = (scroll.current.y.target - scroll.current.y.current) * .001
+    speed.current.target = (scroll.current.y.target - scroll.current.y.current) * .001
 
 
-    // speed.current.current = gsap.utils.interpolate(
-    //   speed.current.current ,
-    //   speed.current.target,
-    //   speed.current.ease
-    // );
+    speed.current.current = gsap.utils.interpolate(
+      speed.current.current ,
+      speed.current.target,
+      speed.current.ease
+    );
     
     if (scroll.current.x.current > scroll.current.x.last) {
       scroll.current.x.direction = 'left';
@@ -93,7 +93,7 @@ export default function HomeScene() {
   const onWheel = (event) =>{
     const { pixelY } = normalizeWheel(event)
 
-    scroll.current.y.target += pixelY
+    scroll.current.y.target += pixelY / 6
 
   }
 
