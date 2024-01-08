@@ -9,6 +9,11 @@
   --size: 1440;
 
 }
+ @media screen and (max-width: 650px) {
+  :root {
+    --size: 375; 
+  } 
+ } 
 
 main, article{
   position: fixed;
@@ -23,7 +28,7 @@ main, article{
   height: calc((var(--vh) * 100) + 4rem);
 }
 .aspect{
-  padding-top: 150%
+  padding-top: var(--aspect)
 }
 
 .canvas__wrapper {
@@ -42,4 +47,9 @@ main, article{
 }
 html {
   font-size: calc(100vw / var(--size) * 10);
+}
+
+[data-src]{
+  opacity: 0;
+  transition: opacity .5s ease
 }
