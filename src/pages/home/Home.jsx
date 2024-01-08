@@ -15,13 +15,24 @@ export default function Home() {
                 <div className="aspect"  ></div>
                 <div className="absolute inset-5 js-tile " data-src={media.src}></div>
               </div>
-            ))}
+            ))}Home
+Work
+ArchiveHome
+Work
+Archive
+About
+Font pairings for SquarespaceBrandingArt Direction for Violent White SupremacyAthens, GreeceTask randomiserFont pairings for SquarespaceHa Giang LoopUnfold PromoPhotography for At HomeUnfold templateOld portfolio about pageUnfold TemplateE-commerace websiteJoshua TreeAbandoned hospital, SchönwaldeMoon Light CoffeeArt Direction for Jigsaw IssueLanding page for old portfolioCostal Waters - Event PosterColour by WordsBranding for a now deceased teamAn Account of Corsica - Title ExplorationThe Current Landing PageMoonlight Coffee business card
+About
+Font pairings for SquarespaceBrandingArt Direction for Violent White SupremacyAthens, GreeceTask randomiserFont pairings for SquarespaceHa Giang LoopUnfold PromoPhotography for At HomeUnfold templateOld portfolio about pageUnfold TemplateE-commerace websiteJoshua TreeAbandoned hospital, SchönwaldeMoon Light CoffeeArt Direction for Jigsaw IssueLanding page for old portfolioCostal Waters - Event PosterColour by WordsBranding for a now deceased teamAn Account of Corsica - Title ExplorationThe Current Landing PageMoonlight Coffee business card
           </div>
           <Canvas
             camera={
               {
-                fov: 45
+                fov: 45,
+                zoom: 1 
               }
+              
+              
             }
           >
             <HomeScene/>
