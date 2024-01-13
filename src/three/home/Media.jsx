@@ -8,6 +8,7 @@ import { offset } from '../../utils/math';
 export default function Media({
   column,
   element,
+  index,
   galleryElement,
   geometry,
   scroll,
@@ -66,6 +67,9 @@ export default function Media({
       x: viewport.width,
       y: viewport.height,
     };
+
+    mesh.current.index = index; // important for raycaster
+
 
   }, [viewport, size])
 

@@ -39,9 +39,10 @@ export default function HomeScene({textures}) {
     ease: 0.1
   })
   
-  const velocity = useRef(0)
-  
   const isDown = useRef(false)
+
+  const {scene, camera, raycaster, pointer} = useThree()
+
 
   const planeGeometry = new THREE.PlaneGeometry(1, 1, 20, 20);
 
@@ -91,12 +92,9 @@ export default function HomeScene({textures}) {
   })
 
   const onWheel = (event) =>{
-    const { pixelY, pixelX } = normalizeWheel(event)
-
+    const { pixelY } = normalizeWheel(event)
 
     scroll.current.y.target += pixelY / 6
-    scroll.current.x.target -= pixelX / 6
-
   }
 
   const onTouchDown = (event) => {
@@ -139,6 +137,15 @@ export default function HomeScene({textures}) {
   const onTouchUp = () =>{
     isDown.current = false
 
+
+    if(Math.round(scroll.current.x.target) == Math.round(scroll.current.x.position)){
+      raycaster.setFromCamera(pointer, camera);
+      const intersects = raycaster.intersectObjects(scene.children);
+
+      if(intersects.length > 0){
+        console.log(intersects[0])
+      }
+    }
   }
 
   useTouchEvents(onWheel, onTouchDown, onTouchMove, onTouchUp)
@@ -148,6 +155,7 @@ export default function HomeScene({textures}) {
     {medias.map((media, index) =>
       <Media
         key={index}
+        index={index} // important for the raycaster
         column={index % 6}
         element={media}
         galleryElement={gallery}
