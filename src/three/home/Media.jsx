@@ -3,15 +3,15 @@ import { useThree, useFrame } from '@react-three/fiber';
 import * as THREE from 'three'
 import fragment from '../../shaders/fragment.glsl'
 import vertex from '../../shaders/vertex.glsl'
+import { offset } from '../../utils/math';
 
 export default function Media({
-  hm,
+  column,
   element,
   galleryElement,
   geometry,
   scroll,
-  speed,
-  isDown
+  texture
 
 }) {
 
@@ -24,12 +24,8 @@ export default function Media({
     y:0
   })
 
-  hm =  hm % 6
-  let stagger
-  0 === hm ? stagger = 1.1 : 1 === hm ? stagger = 1.15 : 2 === hm ? stagger = 1.2 : 3 === hm ? stagger = 1.25 : 4 === hm ? stagger  = 1.3 : 5 === hm ? stagger = 1.35 : null
+  const stagger = offset(column)
 
-  const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load(element.getAttribute("data-src"));
   const { size, viewport } = useThree();
 
 
