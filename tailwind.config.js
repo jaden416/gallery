@@ -13,14 +13,6 @@ export default {
       md : "1.6rem",
       lg : ["4.8rem", 1],
     },
-
-
-    screens:{
-      's': {'min': '650px'},
-      'l':{'min': '1024px'},
-      ...defaultTheme.screens,
-      },
-
     extend: {
       fontFamily: {
         
@@ -28,6 +20,14 @@ export default {
       colors: {
 
       },
+
+      screens:{
+        's': '650px',
+        'l':'1024px',
+        'xl': '1280px',
+        ...defaultTheme.screens,
+      },
+
       spacing:{
         0: "0",
         1: "0.4rem",

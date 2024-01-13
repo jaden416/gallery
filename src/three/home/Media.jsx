@@ -55,8 +55,8 @@ export default function Media({
 
 
     updateScale()
-    extra.current.y = 0
     extra.current.x = 0
+    extra.current.y = 0
 
 
     updateY()

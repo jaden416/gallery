@@ -9,11 +9,11 @@
   --size: 1440;
 
 }
-/* @media screen and (max-width: 650px) {
+ @media screen and (max-width: 650px) {
   :root {
     --size: 375; 
-  } */
-/* } */
+  } 
+ } 
 
 main, article{
   position: fixed;

@@ -38,6 +38,8 @@ export default function Home() {
               {
                 fov: 45,
                 zoom: 1 
+                fov: 45,
+                zoom: 1 
               }
               
             }

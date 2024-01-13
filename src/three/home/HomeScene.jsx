@@ -91,9 +91,10 @@ export default function HomeScene() {
   })
 
   const onWheel = (event) =>{
-    const { pixelY } = normalizeWheel(event)
+    const { pixelY, pixelX } = normalizeWheel(event)
 
     scroll.current.y.target += pixelY / 6
+    scroll.current.x.target -= pixelX / 6
 
   }
 
