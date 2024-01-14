@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
-import * as THREE from 'three'
+import gsap from 'gsap'
 import fragment from '../../shaders/fragment.glsl'
 import vertex from '../../shaders/vertex.glsl'
 import { offset } from '../../utils/math';
@@ -25,6 +25,12 @@ export default function Media({
     x:0, 
     y:0
   })
+  const opacity = useRef({
+    current: 1,
+    target: 1,
+    ease: 0.1,
+    multiplier: 1,
+  });
 
   const stagger = offset(column)
 
@@ -36,7 +42,9 @@ export default function Media({
       uniforms: {
         tMap: { value: texture},
         uViewportSizes: { value: [viewport.x, viewport.y]},
-        uStrength: { value: 0 }
+        uStrength: { value: 0 },
+        uAlpha: { value: 1 },
+
       },
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -76,8 +84,8 @@ export default function Media({
 
   useEffect(()=>{
     (visible.state)
-      // ? show()
-      // : hide()
+      ? show()
+      : hide()
 
   },[visible])
 
@@ -87,16 +95,27 @@ export default function Media({
   }
 
   function updateX(x = 0){
-    mesh.current.position.x = -viewport.width / 2 + (mesh.current.scale.x / 2) + ((bounds.current.left + x) / size.width) * viewport.width + extra.current.x
+    return mesh.current.position.x = -viewport.width / 2 + (mesh.current.scale.x / 2) + ((bounds.current.left + x) / size.width) * viewport.width + extra.current.x
   }
 
   function updateY(y = 0, stagger = 0){
-    mesh.current.position.y = viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y 
+    return mesh.current.position.y = viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y 
   }
 
   function show(){
-
+    gsap.to(opacity.current, {
+      multiplier: 1,
+      delay: 0.5,
+    });
   }
+
+  function hide(){
+    gsap.to(opacity.current, {
+      multiplier: 0,
+      delay: 0.5,
+    });
+  }
+
   useFrame(()=>{
     if (bounds.current == null) return
 
@@ -116,8 +135,6 @@ export default function Media({
       mesh.current.position.y - planeOffset.y > viewportOffset.y
     ) {
       extra.current.y -= galleryHeight.current;
-      console.log('top')
-
     } else if (
       scroll.y.direction === 'bottom' &&
       mesh.current.position.y + planeOffset.y < -viewportOffset.y
@@ -137,8 +154,20 @@ export default function Media({
       extra.current.x -= galleryWidth.current;
     }
 
+
+    opacity.current.target = visible.index == null ? 1 : visible.index === index ? 1 : 0;
+    
+    opacity.current.current = gsap.utils.interpolate(
+      opacity.current.current,
+      opacity.current.target,
+      opacity.current.ease
+    );
+
+    mesh.current.material.uniforms.uAlpha.value = opacity.current.multiplier * opacity.current.current;
+
     updateY(scroll.y.current * 1.5, stagger)
     updateX(scroll.x.current * 1.5)
+
   })
 
   return (

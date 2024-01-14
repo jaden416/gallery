@@ -56,7 +56,6 @@ export default function HomeScene({textures}) {
   useEffect(()=>{
     setGallery(document.querySelector('.js-grid-bounds'))
     setMedias([...document.querySelectorAll('.js-tile')])
-    setVisible(true);
   },[])
 
   useFrame(()=>{
@@ -99,12 +98,15 @@ export default function HomeScene({textures}) {
   })
 
   const onWheel = (event) =>{
+    if(!visible.state) return
+
     const { pixelY } = normalizeWheel(event)
 
     scroll.current.y.target += pixelY / 6
   }
 
   const onTouchDown = (event) => {
+    if(!visible.state) return
     isDown.current = true
 
     scroll.current.x.position = scroll.current.x.current
@@ -123,7 +125,7 @@ export default function HomeScene({textures}) {
   }
 
   const onTouchMove = (event) =>{
-    if (!isDown.current) return
+    if (!isDown.current || !visible.state) return
 
     const x = event.touches
     ? event.touches[0].clientX
@@ -142,6 +144,7 @@ export default function HomeScene({textures}) {
   }
 
   const onTouchUp = () =>{
+
     isDown.current = false
 
 
@@ -153,7 +156,7 @@ export default function HomeScene({textures}) {
         const obj = intersects[0].object
         hit.current = obj.index
 
-        visible.state ? onOpen() : onClose()
+        visible.state ? onOpen(hit.current) : onClose() // click
       }
     }
   }
