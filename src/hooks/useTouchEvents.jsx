@@ -20,6 +20,7 @@ export default function useTouchEvents(
     };
 
     const handleTouchUp = (event) => {
+      event.preventDefault() // prevents double fire
       onTouchUp(event);
     };
 
