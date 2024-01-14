@@ -10,7 +10,11 @@ import useTouchEvents from '../../hooks/useTouchEvents'
 export default function HomeScene({textures}) {
   const [gallery, setGallery] = useState(null)
   const [medias, setMedias] = useState(null)
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState({
+    index: null,
+    state: true,
+  })
+
 
   const scroll = useRef({
       x : {
@@ -40,6 +44,9 @@ export default function HomeScene({textures}) {
   })
   
   const isDown = useRef(false)
+
+  const hit = useRef(null) // used to briefly identify the plane index the user clicks on
+
 
   const {scene, camera, raycaster, pointer} = useThree()
 
@@ -143,9 +150,26 @@ export default function HomeScene({textures}) {
       const intersects = raycaster.intersectObjects(scene.children);
 
       if(intersects.length > 0){
-        console.log(intersects[0])
+        const obj = intersects[0].object
+        hit.current = obj.index
+
+        visible.state ? onOpen() : onClose()
       }
     }
+  }
+
+  const onOpen = (index) =>{
+    setVisible({
+      index,
+      state: false
+    })
+  }
+
+  const onClose = () =>{
+    setVisible({
+      index: null,
+      state: true
+    })
   }
 
   useTouchEvents(onWheel, onTouchDown, onTouchMove, onTouchUp)

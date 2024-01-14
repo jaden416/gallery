@@ -12,7 +12,8 @@ export default function Media({
   galleryElement,
   geometry,
   scroll,
-  texture
+  texture,
+  visible
 
 }) {
 
@@ -73,6 +74,13 @@ export default function Media({
 
   }, [viewport, size])
 
+  useEffect(()=>{
+    (visible.state)
+      // ? show()
+      // : hide()
+
+  },[visible])
+
   function updateScale(){
     mesh.current.scale.x = viewport.width * bounds.current.width / size.width
     mesh.current.scale.y = viewport.height * bounds.current.height / size.height
@@ -86,6 +94,9 @@ export default function Media({
     mesh.current.position.y = viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y 
   }
 
+  function show(){
+
+  }
   useFrame(()=>{
     if (bounds.current == null) return
 
@@ -126,8 +137,8 @@ export default function Media({
       extra.current.x -= galleryWidth.current;
     }
 
-    updateY(scroll.y.current*1.5, stagger)
-    updateX(scroll.x.current*1.5)
+    updateY(scroll.y.current * 1.5, stagger)
+    updateX(scroll.x.current * 1.5)
   })
 
   return (
