@@ -141,9 +141,7 @@ export default function Media({
       delay: 0.5,
     });
 
-    gsap.to(mesh.current.position, {
-      duration: .2, x: 0, y: 0
-    });
+
 
     // if(visible.index == index)
     //   console.log(mesh.current.position.x)

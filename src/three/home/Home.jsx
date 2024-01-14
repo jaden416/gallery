@@ -151,7 +151,7 @@ export default function HomeScene({textures}) {
     if(Math.round(scroll.current.x.target) == Math.round(scroll.current.x.position)){
       raycaster.setFromCamera(pointer, camera);
       const intersects = raycaster.intersectObjects(scene.children);
-
+      console.log(intersects[0])
       if(intersects.length > 0){
         const obj = intersects[0].object
         hit.current = obj.index
