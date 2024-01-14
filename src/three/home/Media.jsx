@@ -32,6 +32,8 @@ export default function Media({
     multiplier: 1,
   });
 
+  const animation = useRef(0)
+
   const stagger = offset(column)
 
   const { size, viewport } = useThree();
@@ -83,15 +85,46 @@ export default function Media({
   }, [viewport, size])
 
   useEffect(()=>{
-    (visible.state)
+    (visible.index == index)
       ? show()
       : hide()
 
+      if (index === visible.index) {
+        animateOut();
+      }
+
   },[visible])
 
+  function animateIn(){
+    gsap.to(animation, { current: 1,  ease: 'expo.inOut' });
+
+  }
+
+  function animateOut(){
+    gsap.to(animation, { current: 0,  ease: 'expo.inOut' });
+  }
+
   function updateScale(){
-    mesh.current.scale.x = viewport.width * bounds.current.width / size.width
-    mesh.current.scale.y = viewport.height * bounds.current.height / size.height
+    // mesh.current.scale.x = viewport.width * bounds.current.width / size.width
+    // mesh.current.scale.y = viewport.height * bounds.current.height / size.height
+
+
+    const width =
+    gsap.utils.interpolate(
+      bounds.current.width,
+      viewport.width,
+      animation.current
+    ) / size.width;
+
+  const height =
+    gsap.utils.interpolate(
+      bounds.current.height,
+      viewport.height,
+      animation.current
+    ) / size.height;
+
+    mesh.current.scale.x = viewport.width * width
+    mesh.current.scale.y = viewport.height * height
   }
 
   function updateX(x = 0){
@@ -107,17 +140,26 @@ export default function Media({
       multiplier: 1,
       delay: 0.5,
     });
+
+    gsap.to(mesh.current.position, {
+      duration: .2, x: 0, y: 0
+    });
+
+    // if(visible.index == index)
+    //   console.log(mesh.current.position.x)
   }
 
   function hide(){
-    gsap.to(opacity.current, {
-      multiplier: 0,
-      delay: 0.5,
-    });
+    // gsap.to(opacity.current, {
+    //   multiplier: 0,
+    //   delay: 0.5,
+    // });
   }
 
   useFrame(()=>{
     if (bounds.current == null) return
+
+    updateScale()
 
     mesh.current.material.uniforms.uStrength.value = 0
     
