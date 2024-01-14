@@ -1,25 +1,26 @@
-
-#define PI 3.1415926535897932384626433832795
- 
-precision highp float;
-precision highp int;
- 
+precision mediump float;
+#define GLSLIFY 1
 attribute vec3 position;
 attribute vec2 uv;
- 
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
- 
-uniform float uStrength;
-uniform vec2 uViewportSizes;
- 
+uniform float u_diff;
+uniform float u_progress;
+uniform float uScale;
+
+uniform vec2 u_pos;
+uniform vec2 u_focusSize;
+uniform vec2 u_res;
+
 varying vec2 vUv;
- 
-void main() {
-  vec4 newPosition = modelViewMatrix * vec4(position, 1.0);
-  newPosition.z += sin(newPosition.y / uViewportSizes.y * PI + PI / 2.0) * -uStrength;
- 
-  vUv = uv;
- 
-  gl_Position = projectionMatrix * newPosition;
+
+void main(){
+vec3 pos = position;
+
+pos.xy *= uScale;
+
+vec4 mPos = modelViewMatrix * vec4(pos, 1.);
+
+vUv = uv;
+gl_Position = projectionMatrix * mPos;
 }

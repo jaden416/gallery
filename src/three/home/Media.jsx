@@ -46,7 +46,7 @@ export default function Media({
         uViewportSizes: { value: [viewport.x, viewport.y]},
         uStrength: { value: 0 },
         uAlpha: { value: 1 },
-
+        uScale: { value: 1}
       },
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -96,12 +96,13 @@ export default function Media({
   },[visible])
 
   function animateIn(){
-    gsap.to(animation, { current: 1,  ease: 'expo.inOut' });
+    gsap.to(animation, { current: 1, duration: 1, ease: 'expo.inOut' });
 
   }
 
   function animateOut(){
-    gsap.to(animation, { current: 0,  ease: 'expo.inOut' });
+    gsap.to(animation, { current: 0.0, duration: 1, ease: 'expo.inOut' });
+    console.log(animation.current)
   }
 
   function updateScale(){
