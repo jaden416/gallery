@@ -22,5 +22,5 @@ export const urls = [
   { src: "/src/assets/k/21.jpg", alt: "idk" },
   { src: "/src/assets/k/22.jpg", alt: "idk" },
   { src: "/src/assets/k/23.jpg", alt: "idk" },
-  { src: "/src/assets/k/24.jpg", alt: "idk" },
+  { src: "/src/assets/k/10.jpg", alt: "idk" }, // duplicate image
 ];

@@ -102,7 +102,6 @@ export default function Media({
 
   function animateOut(){
     gsap.to(animation, { current: 0.0, duration: 1, ease: 'expo.inOut' });
-    console.log(animation.current)
   }
 
   function updateScale(){

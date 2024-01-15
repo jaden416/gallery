@@ -156,6 +156,8 @@ export default function HomeScene({textures}) {
         const obj = intersects[0].object
         hit.current = obj.index
 
+        console.log(obj.index)
+
         visible.state ? onOpen(hit.current) : onClose() // click
       }
     }
