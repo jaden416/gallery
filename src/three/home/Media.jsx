@@ -11,14 +11,16 @@ export default function Media({
   index,
   galleryElement,
   geometry,
+  focus,
   scroll,
   texture,
-  visible
+  visible,
 
 }) {
 
-  const mesh = useRef();
-  const bounds = useRef();
+  const mesh = useRef()
+  const bounds = useRef()
+  const focusBounds = useRef()
   const galleryHeight = useRef(0)
   const galleryWidth = useRef(0)
   const extra  = useRef({
@@ -55,6 +57,7 @@ export default function Media({
 
   useEffect(()=> {
     const rect = element.getBoundingClientRect()
+    const focusRect = focus.getBoundingClientRect()
     galleryHeight.current = (galleryElement.clientHeight / size.height) * viewport.height;
     galleryWidth.current = (galleryElement.clientWidth / size.width) * viewport.width;
 
@@ -63,6 +66,13 @@ export default function Media({
       top: rect.top,
       width: rect.width,
       height: rect.height,
+    }
+
+    focusBounds.current = {
+      left: focusRect.left,
+      top: focusRect.top,
+      width: focusRect.width,
+      height: focusRect.height,
     }
 
 

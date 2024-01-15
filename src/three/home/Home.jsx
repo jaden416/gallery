@@ -10,6 +10,7 @@ import useTouchEvents from '../../hooks/useTouchEvents'
 export default function HomeScene({textures}) {
   const [gallery, setGallery] = useState(null)
   const [medias, setMedias] = useState(null)
+  const [focusedTile, setFocusedTile] = useState(null)
   const [visible, setVisible] = useState({
     index: null,
     state: true,
@@ -56,6 +57,7 @@ export default function HomeScene({textures}) {
   useEffect(()=>{
     setGallery(document.querySelector('.js-grid-bounds'))
     setMedias([...document.querySelectorAll('.js-tile')])
+    setFocusedTile(document.querySelector('.js-grid-focused'))
   },[])
 
   useFrame(()=>{
@@ -194,7 +196,7 @@ export default function HomeScene({textures}) {
         speed = {speed.current}
         isDown={isDown}
         texture={textures[index]}
-
+        focus ={focusedTile}
       />
     )}
   </>
