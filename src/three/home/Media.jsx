@@ -95,13 +95,13 @@ export default function Media({
   }, [viewport, size])
 
   useEffect(()=>{
-    (visible.index == index)
-      ? show()
-      : hide()
+    // (visible.index == index)
+    //   ? show()
+    //   : hide()
 
-      if (index === visible.index) {
-        animateOut();
-      }
+    //   if (index === visible.index) {
+    //     animateOut();
+    //   }
 
   },[visible])
 
@@ -118,19 +118,18 @@ export default function Media({
     // mesh.current.scale.x = viewport.width * bounds.current.width / size.width
     // mesh.current.scale.y = viewport.height * bounds.current.height / size.height
 
-
     const width =
     gsap.utils.interpolate(
       bounds.current.width,
       viewport.width,
-      animation.current
+      0
     ) / size.width;
 
   const height =
     gsap.utils.interpolate(
       bounds.current.height,
       viewport.height,
-      animation.current
+      0
     ) / size.height;
 
     mesh.current.scale.x = viewport.width * width
@@ -150,20 +149,10 @@ export default function Media({
       multiplier: 1,
       delay: 0.5,
     });
-
-    gsap.to(mesh.current.position, {
-      duration: .2, x: 0, y: 0
-    });
-
-    // if(visible.index == index)
-    //   console.log(mesh.current.position.x)
   }
 
   function hide(){
-    // gsap.to(opacity.current, {
-    //   multiplier: 0,
-    //   delay: 0.5,
-    // });
+
   }
 
   useFrame(()=>{
