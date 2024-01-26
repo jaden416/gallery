@@ -161,6 +161,8 @@ export default function HomeScene({textures}) {
         console.log(obj.index)
 
         visible.state ? onOpen(hit.current) : onClose() // click
+      }else{
+        onClose() // will change later
       }
     }
   }
