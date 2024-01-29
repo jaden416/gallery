@@ -18,7 +18,6 @@ export default function Media({
 
 }) {
 
-  const prevIndex = useRef()
   const mesh = useRef()
   const bounds = useRef()
   const focusBounds = useRef()
@@ -32,15 +31,15 @@ export default function Media({
   const opacity = useRef({
     current: 1,
     target: 1,
-    ease: 0.1,
+    ease: 0.15,
     multiplier: 1,
   });
 
-  const progress = useRef({
+  const animation = useRef({
     current: 1,
     target: 1,
-    ease: 0.1,
-    multiplier: 1,
+    ease: 0.15,
+    intial: true,
   });
 
   const epsilon = useRef(.01)
@@ -105,8 +104,12 @@ export default function Media({
   useEffect(()=>{
     
     opacity.current.target = visible.index == null ? 1 : visible.index === index ? 1 : 0;
-    progress.current.target = visible.index == null ? 1 : visible.index === index ? 0 : 1;
-      
+    animation.current.target = visible.index == null ? 1 : visible.index === index ? 0 : 1;
+    
+    if(visible.index == index)
+      mesh.current.renderOrder = 1;
+    
+
 
   },[visible])
 
@@ -116,14 +119,14 @@ export default function Media({
     gsap.utils.interpolate(
       focusBounds.current.width,
       bounds.current.width,
-      progress.current.current
+      animation.current.current
       ) / size.width;
 
   const height =
     gsap.utils.interpolate(
       focusBounds.current.height,
       bounds.current.height,
-      progress.current.current
+      animation.current.current
       ) / size.height;
 
     mesh.current.scale.x = viewport.width * width
@@ -131,11 +134,11 @@ export default function Media({
   }
 
   function updateX(x = 0){
-    mesh.current.position.x = (((-viewport.width / 2 + (mesh.current.scale.x / 2) + ((bounds.current.left + x) / size.width) * viewport.width + extra.current.x))) * progress.current.current
+    mesh.current.position.x = (((-viewport.width / 2 + (mesh.current.scale.x / 2) + ((bounds.current.left + x) / size.width) * viewport.width + extra.current.x))) * animation.current.current
   }
 
   function updateY(y = 0, stagger = 0){
-    mesh.current.position.y = (((viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y)) ) * progress.current.current
+    mesh.current.position.y = (((viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y)) ) * animation.current.current
   }
 
 
@@ -186,10 +189,10 @@ export default function Media({
       opacity.current.ease
     )
 
-    progress.current.current = gsap.utils.interpolate(
-      progress.current.current,
-      progress.current.target,
-      progress.current.ease
+    animation.current.current = gsap.utils.interpolate(
+      animation.current.current,
+      animation.current.target,
+      animation.current.ease
     );
 
     mesh.current.material.uniforms.uAlpha.value = opacity.current.multiplier * opacity.current.current;
