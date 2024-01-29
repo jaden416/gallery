@@ -151,10 +151,27 @@ export default function Media({
   }
 
   function updateY(y = 0, stagger = 0){
-    mesh.current.position.y = ((viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y)) * progress.current.current
+    return mesh.current.position.y = viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y 
   }
 
+  function show(){
+    gsap.to(opacity.current, {
+      multiplier: 1,
+      delay: 0.5,
+    });
 
+
+
+    // if(visible.index == index)
+    //   console.log(mesh.current.position.x)
+  }
+
+  function hide(){
+    // gsap.to(opacity.current, {
+    //   multiplier: 0,
+    //   delay: 0.5,
+    // });
+  }
 
   useFrame(()=>{
     if (bounds.current == null) return
