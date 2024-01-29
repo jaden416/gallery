@@ -45,7 +45,7 @@ export default function Media({
   const animation = useRef({
     current: 0,
     target: 1,
-    ease: 0.1,
+    ease: 0.6,
     multiplier: 1,
   });
 
