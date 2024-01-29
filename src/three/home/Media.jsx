@@ -11,14 +11,16 @@ export default function Media({
   index,
   galleryElement,
   geometry,
+  focus,
   scroll,
   texture,
-  visible
+  visible,
 
 }) {
 
-  const mesh = useRef();
-  const bounds = useRef();
+  const mesh = useRef()
+  const bounds = useRef()
+  const focusBounds = useRef()
   const galleryHeight = useRef(0)
   const galleryWidth = useRef(0)
   const extra  = useRef({
@@ -32,7 +34,26 @@ export default function Media({
     multiplier: 1,
   });
 
-  const animation = useRef(0)
+  const progress = useRef({
+    current: 1,
+    target: 1,
+    ease: 0.1,
+    multiplier: 1,
+  });
+
+  // i know this is too much
+  const animation = useRef({
+    current: 0,
+    target: 1,
+    ease: 0.6,
+    multiplier: 1,
+  });
+
+
+
+
+  const epsilon = useRef(.01)
+
 
   const stagger = offset(column)
 
@@ -46,7 +67,7 @@ export default function Media({
         uViewportSizes: { value: [viewport.x, viewport.y]},
         uStrength: { value: 0 },
         uAlpha: { value: 1 },
-
+        uScale: { value: 1}
       },
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -55,6 +76,7 @@ export default function Media({
 
   useEffect(()=> {
     const rect = element.getBoundingClientRect()
+    const focusRect = focus.getBoundingClientRect()
     galleryHeight.current = (galleryElement.clientHeight / size.height) * viewport.height;
     galleryWidth.current = (galleryElement.clientWidth / size.width) * viewport.width;
 
@@ -63,6 +85,13 @@ export default function Media({
       top: rect.top,
       width: rect.width,
       height: rect.height,
+    }
+
+    focusBounds.current = {
+      left: focusRect.left,
+      top: focusRect.top,
+      width: focusRect.width,
+      height: focusRect.height,
     }
 
 
@@ -80,86 +109,68 @@ export default function Media({
     };
 
     mesh.current.index = index; // important for raycaster
+    mesh.current.renderOrder = 0
 
 
   }, [viewport, size])
 
   useEffect(()=>{
-    (visible.index == index)
-      ? show()
-      : hide()
+    
 
-      if (index === visible.index) {
-        animateOut();
-      }
+    opacity.current.target = visible.index == null ? 1 : visible.index === index ? 1 : 0;
+    progress.current.target = visible.index == null ? 1 : visible.index === index ? 0 : 1;
+    animation.current.target  = visible.index == null ? 0 : visible.index === index ? 1 : 0;
 
+
+    if(visible.index === index){
+      mesh.current.renderOrder = 1
+    }
+
+      
   },[visible])
 
-  function animateIn(){
-    gsap.to(animation, { current: 1,  ease: 'expo.inOut' });
-
-  }
-
-  function animateOut(){
-    gsap.to(animation, { current: 0,  ease: 'expo.inOut' });
-  }
 
   function updateScale(){
-    // mesh.current.scale.x = viewport.width * bounds.current.width / size.width
-    // mesh.current.scale.y = viewport.height * bounds.current.height / size.height
-
-
     const width =
     gsap.utils.interpolate(
       bounds.current.width,
-      viewport.width,
-      animation.current
-    ) / size.width;
+      focusBounds.current.width,
+      animation.current.current
+      ) / size.width;
 
   const height =
     gsap.utils.interpolate(
       bounds.current.height,
-      viewport.height,
-      animation.current
-    ) / size.height;
+      focusBounds.current.height,
+      animation.current.current
+      ) / size.height;
 
     mesh.current.scale.x = viewport.width * width
     mesh.current.scale.y = viewport.height * height
   }
 
   function updateX(x = 0){
-    return mesh.current.position.x = -viewport.width / 2 + (mesh.current.scale.x / 2) + ((bounds.current.left + x) / size.width) * viewport.width + extra.current.x
+    mesh.current.position.x = ((-viewport.width / 2 + (mesh.current.scale.x / 2) + ((bounds.current.left + x) / size.width) * viewport.width + extra.current.x)) * progress.current.current
   }
 
   function updateY(y = 0, stagger = 0){
-    return mesh.current.position.y = viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y 
+    mesh.current.position.y = ((viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y)) * (progress.current.current)
   }
 
-  function show(){
-    gsap.to(opacity.current, {
-      multiplier: 1,
-      delay: 0.5,
-    });
 
-
-
-    // if(visible.index == index)
-    //   console.log(mesh.current.position.x)
-  }
-
-  function hide(){
-    // gsap.to(opacity.current, {
-    //   multiplier: 0,
-    //   delay: 0.5,
-    // });
-  }
 
   useFrame(()=>{
     if (bounds.current == null) return
 
-    updateScale()
 
-    mesh.current.material.uniforms.uStrength.value = 0
+      // if it is not 1 and it is trying to go back to 1
+    if(progress.current.current < 1 && progress.current.current > 1 - epsilon.current){
+      mesh.current.renderOrder = 0
+      progress.current.current +=  0.0001; 
+      progress.current.current = Math.min(progress.current.current, 1)
+    }
+
+    // mesh.current.material.uniforms.uStrength.value = 0
     
     const viewportOffset = { 
       x : viewport.width / 2,
@@ -194,14 +205,27 @@ export default function Media({
       extra.current.x -= galleryWidth.current;
     }
 
-
-    opacity.current.target = visible.index == null ? 1 : visible.index === index ? 1 : 0;
+    updateScale()
     
     opacity.current.current = gsap.utils.interpolate(
       opacity.current.current,
       opacity.current.target,
       opacity.current.ease
+    )
+
+    progress.current.current = gsap.utils.interpolate(
+      progress.current.current,
+      progress.current.target,
+      progress.current.ease
     );
+
+
+    animation.current.current = gsap.utils.interpolate(
+      animation.current.current,
+      animation.current.target,
+      animation.current.ease
+    );
+
 
     mesh.current.material.uniforms.uAlpha.value = opacity.current.multiplier * opacity.current.current;
 

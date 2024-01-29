@@ -33,7 +33,13 @@ export default function Home() {
               </div>
             ))}
           </div>
+          <div className="pointer-events-none	 relative z-10 flex flex-col items-center justify-center">
+            <img src="/src/assets/k/Font-Pairings-01.jpg" className="invisible pointer-events-none	 h-[60rem] w-auto grid-focused js-grid-focused"/>
+          </div>
+          <div className="absolute h-full w-full">
+
           <Canvas
+            className='gl z-5'
             camera={
               {
                 fov: 45,
@@ -46,6 +52,8 @@ export default function Home() {
               textures={textures}
             />
           </Canvas>
+          </div>
+
         </div>
       </article>
     </main>
