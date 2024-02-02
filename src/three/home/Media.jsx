@@ -31,18 +31,17 @@ export default function Media({
   const opacity = useRef({
     current: 1,
     target: 1,
-    ease: 0.15,
+    ease: 0.1,
     multiplier: 1,
   });
 
   const animation = useRef({
     current: 1,
     target: 1,
-    ease: 0.15,
+    ease: 0.1,
     intial: true,
   });
 
-  const epsilon = useRef(.01)
 
   const stagger = offset(column)
 
@@ -97,8 +96,6 @@ export default function Media({
     };
 
     mesh.current.index = index; // important for raycaster
-
-
   }, [viewport, size])
 
   useEffect(()=>{
@@ -106,12 +103,13 @@ export default function Media({
     opacity.current.target = visible.index == null ? 1 : visible.index === index ? 1 : 0;
     animation.current.target = visible.index == null ? 1 : visible.index === index ? 0 : 1;
     
-    if(visible.index == index)
-      mesh.current.renderOrder = 1;
+    animateIn()
+    animateOut()
     
 
-
   },[visible])
+
+
 
 
   function updateScale(){
@@ -141,13 +139,24 @@ export default function Media({
     mesh.current.position.y = (((viewport.height / 2 - (mesh.current.scale.y / 2) - ((bounds.current.top - y  * stagger) / size.height) * viewport.height + extra.current.y)) ) * animation.current.current
   }
 
+  function animateIn(){
+    if(index == visible.index){
+      mesh.current.renderOrder = 1 
+      gsap.to(animation.current, { current: 0, duration: .35, ease: "power3"});
+    }
+  }
+
+  function animateOut(){
+    if(index != visible.index){
+      gsap.to(animation.current, { current: 1, duration: .35, ease: "power3"});
+    }
+  }
+
 
 
   useFrame(()=>{
     if (bounds.current == null) return
 
-    // mesh.current.material.uniforms.uStrength.value = 0
-    
     const viewportOffset = { 
       x : viewport.width / 2,
       y : viewport.height / 2
@@ -188,12 +197,6 @@ export default function Media({
       opacity.current.target,
       opacity.current.ease
     )
-
-    animation.current.current = gsap.utils.interpolate(
-      animation.current.current,
-      animation.current.target,
-      animation.current.ease
-    );
 
     mesh.current.material.uniforms.uAlpha.value = opacity.current.multiplier * opacity.current.current;
 
