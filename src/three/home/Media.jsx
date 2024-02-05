@@ -156,11 +156,9 @@ export default function Media({
   }
 
   function animateIn(){
-    // mesh.current.renderOrder = 10
-    console.log(index + " we in here")
-    gsap.to(mesh.current,{renderOrder: 19}).restart()
-    gsap.to(animation.current, { current: 0, duration: .35, ease: "power3"}).restart();
-    ;
+    gsap.to(mesh.current, { renderOrder: 1 }) 
+    gsap.to(animation.current, { current: 0, duration: .35, ease: "power3"});
+    
   }
 
   function hide(){
@@ -168,7 +166,7 @@ export default function Media({
   }
 
   function animateOut(){
-    gsap.to(animation.current, { current: 1, duration: .35, ease: "power3"}).restart();
+    gsap.to(animation.current, { current: 1, duration: .35, ease: "power3"}) ;
 
     gsap.to(
       mesh.current, {
@@ -176,7 +174,7 @@ export default function Media({
         frustumCulled: true,
         renderOrder: 0,
       }
-    ).restart();
+    ) ;
 
   }
 
