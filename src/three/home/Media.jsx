@@ -19,6 +19,7 @@ export default function Media({
 }) {
 
   const mesh = useRef()
+  const  prevIndex = useRef()
   const bounds = useRef()
   const focusBounds = useRef()
   const galleryHeight = useRef(0)
@@ -99,14 +100,29 @@ export default function Media({
   }, [viewport, size])
 
   useEffect(()=>{
-    
-    opacity.current.target = visible.index == null ? 1 : visible.index === index ? 1 : 0;
-    animation.current.target = visible.index == null ? 1 : visible.index === index ? 0 : 1;
-    
-    animateIn()
-    animateOut()
-    
 
+    if(visible.index != null)
+      prevIndex.current = visible.index
+    
+    console.log(prevIndex.current)
+
+    if(visible.index == index)
+      animateIn()
+
+    if(!visible.state & visible.index != index)
+      hide()
+
+    if(visible.state)
+      show()
+    
+    if(visible.state & index == prevIndex.current)
+      animateOut()
+
+
+
+
+
+    
   },[visible])
 
 
@@ -140,17 +156,30 @@ export default function Media({
   }
 
   function animateIn(){
-    if(index == visible.index){
-      mesh.current.renderOrder = 1 
-      gsap.to(animation.current, { current: 0, duration: .35, ease: "power3"});
-    }
+    mesh.current.renderOrder = 10
+    console.log(index + " we in here")
+    gsap.to(animation.current, { current: 0, duration: .35, ease: "power3"});
+  }
+
+  function hide(){
+    gsap.to(opacity.current, { current: 0, duration: .35, ease: "power3"});
   }
 
   function animateOut(){
-    if(index != visible.index){
-      gsap.to(animation.current, { current: 1, duration: .35, ease: "power3"});
-    }
+    gsap.to(animation.current, { current: 1, duration: .35, ease: "power3"})
+    gsap.to(
+      mesh.current, {
+        duration: .35,
+        frustumCulled: true,
+        renderOrder: 0,
+      }
+    )
   }
+
+  function show(){
+    gsap.to(opacity.current, { current: 1, duration: .35, ease: "power3"});
+  }
+  
 
 
 
@@ -192,11 +221,11 @@ export default function Media({
 
     updateScale()
     
-    opacity.current.current = gsap.utils.interpolate(
-      opacity.current.current,
-      opacity.current.target,
-      opacity.current.ease
-    )
+    // opacity.current.current = gsap.utils.interpolate(
+    //   opacity.current.current,
+    //   opacity.current.target,
+    //   opacity.current.ease
+    // )
 
     mesh.current.material.uniforms.uAlpha.value = opacity.current.multiplier * opacity.current.current;
 
