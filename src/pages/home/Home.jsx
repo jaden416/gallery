@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { urls } from '../../data/gallery.js'
+import { urls, texts } from '../../data/gallery.js'
 import HomeScene from '../../three/home/Home.jsx'
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -35,25 +35,29 @@ export default function Home() {
           </div>
           <div className="pointer-events-none	 relative z-10 flex flex-col items-center justify-center">
             <img src="/src/assets/k/Font-Pairings-01.jpg" className="invisible pointer-events-none	 h-[60rem] w-auto grid-focused js-grid-focused"/>
+            <div className="relative min-w-[24rem] h-[5rem] js-grid-content">
+              {texts.map((text, index)=>{
+                return <p  key={index} className="absolute top-0 left-0 w-full text-18 opacity-0 text-center js-grid-text">{text}</p>
+              })}
+            </div>
           </div>
+
           <div className="absolute h-full w-full">
-
-          <Canvas
-            className='gl z-5'
-            camera={
-              {
-                fov: 45,
-                zoom: 1 
+            <Canvas
+              className='gl z-5'
+              camera={
+                {
+                  fov: 45,
+                  zoom: 1 
+                }
+                
               }
-              
-            }
-          >
-            <HomeScene
-              textures={textures}
-            />
-          </Canvas>
+            >
+              <HomeScene
+                textures={textures}
+              />
+            </Canvas>
           </div>
-
         </div>
       </article>
     </main>

@@ -7,10 +7,13 @@ import Media from './Media';
 import normalizeWheel from 'normalize-wheel'
 import useTouchEvents from '../../hooks/useTouchEvents'
 
+
 export default function HomeScene({textures}) {
   const [gallery, setGallery] = useState(null)
   const [medias, setMedias] = useState(null)
+  const [texts, setTexts] = useState(null)
   const [focusedTile, setFocusedTile] = useState(null)
+  
   const [visible, setVisible] = useState({
     index: null,
     state: true,
@@ -57,6 +60,8 @@ export default function HomeScene({textures}) {
   useEffect(()=>{
     setGallery(document.querySelector('.js-grid-bounds'))
     setMedias([...document.querySelectorAll('.js-tile')])
+    setTexts([...document.querySelectorAll('.js-grid-text')])
+
     setFocusedTile(document.querySelector('.js-grid-focused'))
   },[])
 
@@ -102,9 +107,10 @@ export default function HomeScene({textures}) {
   const onWheel = (event) =>{
     if(!visible.state) return
 
-    const { pixelY } = normalizeWheel(event)
+    const { pixelY, pixelX } = normalizeWheel(event)
 
     scroll.current.y.target += pixelY / 6
+    scroll.current.x.target -= pixelX / 6
   }
 
   const onTouchDown = (event) => {
@@ -158,7 +164,6 @@ export default function HomeScene({textures}) {
         const obj = intersects[0].object
         hit.current = obj.index
 
-        // console.log(obj.index)
 
         visible.state ? onOpen(hit.current) : onClose() // click
       }else{
@@ -182,7 +187,7 @@ export default function HomeScene({textures}) {
   }
 
   useTouchEvents(onWheel, onTouchDown, onTouchMove, onTouchUp)
-  if (medias == null) return null;
+  if (medias == null && texts == null) return null;
 
   return <>
     {medias.map((media, index) =>
@@ -197,8 +202,9 @@ export default function HomeScene({textures}) {
         scroll={scroll.current}
         speed = {speed.current}
         isDown={isDown}
-        texture={textures[index]}
         focus ={focusedTile}
+        text={texts[index]}
+        texture={textures[index]}        
       />
     )}
   </>

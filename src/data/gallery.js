@@ -24,3 +24,31 @@ export const urls = [
   { src: "/src/assets/k/23.jpg", alt: "idk" },
   { src: "/src/assets/k/10.jpg", alt: "idk" }, // duplicate image
 ];
+
+export const texts = [
+  "Font pairings for Squarespace",
+  "Branding",
+  "Art Direction for Violent White Supremacy",
+  "Athens, Greece",
+  "Task randomiser",
+  "Font pairings for Squarespace",
+  "Ha Giang Loop",
+  "Unfold Promo",
+  "Photography for At Home",
+  "Unfold template",
+  "Old portfolio about page",
+  "Unfold Template",
+  "E-commerace website",
+  "Joshua Tree",
+  "Abandoned hospital, Schönwalde",
+  "Moon Light Coffee",
+  "Art Direction for Jigsaw Issue",
+  "Landing page for old portfolio",
+  "Costal Waters - Event Poster",
+  "Colour by Words",
+  "Branding for a now deceased team",
+  "An Account of Corsica - Title Exploration",
+  "The Current Landing Page",
+  "Moonlight Coffee business card"
+];
+
