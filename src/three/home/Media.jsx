@@ -190,7 +190,7 @@ export default function Media({
     let tl = gsap.timeline();
 
     gsap.to(mesh.current, { renderOrder: 1 }) 
-    tl.to(animation.current, { current: 0, target: 1, duration: .35, ease: "power3"})
+    tl.to(animation.current, { current: 0, target: 1, duration: .35, ease: "power3"}).restart()
 
     tl.fromTo(text, {
       alpha: 0,
