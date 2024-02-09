@@ -9,6 +9,9 @@ import useTouchEvents from '../../hooks/useTouchEvents'
 
 
 export default function HomeScene({textures}) {
+
+
+
   const [gallery, setGallery] = useState(null)
   const [medias, setMedias] = useState(null)
   const [texts, setTexts] = useState(null)
@@ -46,6 +49,7 @@ export default function HomeScene({textures}) {
     current: 0,
     ease: 0.1
   })
+
   
   const isDown = useRef(false)
 
@@ -63,6 +67,9 @@ export default function HomeScene({textures}) {
     setTexts([...document.querySelectorAll('.js-grid-text')])
 
     setFocusedTile(document.querySelector('.js-grid-focused'))
+
+
+
   },[])
 
   useFrame(()=>{
@@ -191,6 +198,7 @@ export default function HomeScene({textures}) {
   if (medias == null && texts == null) return null;
 
   return <>
+
     {medias.map((media, index) =>
       <Media
         key={index}

@@ -3,6 +3,7 @@ import { urls } from '../../data/gallery.js'
 import HomeScene from '../../three/home/Home.jsx'
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
+import FPSStats from "react-fps-stats";
 
 export default function Home() {
   const data = urls;
@@ -41,7 +42,9 @@ export default function Home() {
               })}
             </div>
           </div>
-
+          <div>
+            <FPSStats />
+          </div>
           <div className="absolute h-full w-full">
             <Canvas
               className='gl z-5'
