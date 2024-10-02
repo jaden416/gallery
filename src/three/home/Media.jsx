@@ -71,7 +71,7 @@ export default function Media({
     const rect = element.getBoundingClientRect()
     const textRect = text.getBoundingClientRect()
     const focusRect = focus.getBoundingClientRect()
-
+    console.log(focusRect)
     galleryHeight.current = (galleryElement.clientHeight / size.height) * viewport.height;
     galleryWidth.current = (galleryElement.clientWidth / size.width) * viewport.width;
 
@@ -123,8 +123,11 @@ export default function Media({
       prevIndex.current = visible.index
     
 
-    if(visible.index == index)
+    if(visible.index == index){
+      console.log(((((viewport.height / 2 - (mesh.current.scale.y / 2) - ((focusBounds.current.top) / size.height) * viewport.height)))))
       animateIn()
+
+    }
 
     if(!visible.state & visible.index != index)
       hide()
@@ -134,11 +137,6 @@ export default function Media({
     
     if(visible.state & index == prevIndex.current)
       animateOut()
-
-
-
-
-
     
   },[visible])
 

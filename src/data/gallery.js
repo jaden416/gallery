@@ -2,7 +2,7 @@ export const urls = [
   { src: "/src/assets/k/1.jpg", alt: "idk" ,
     description: "Font pairings for Squarespace"
   },
-  { src: "/src/assets/k/122.jpg", alt: "idk" ,
+  { src: "/src/assets/k/2.jpg", alt: "idk" ,
     description: "Branding"
   },
   { src: "/src/assets/k/3.jpg", alt: "idk" ,
