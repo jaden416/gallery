@@ -43,7 +43,7 @@ export default function Media({
     current: 1,
     target: 1,
     ease: 0.1,
-    multiplier: 1,
+    set: false,
   });
 
   const time = useRef(0.35);
