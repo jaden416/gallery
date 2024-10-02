@@ -51,7 +51,6 @@ export default function Gallery({ textures }) {
     setMedias([...document.querySelectorAll(".js-tile")]);
     setFocusedTile(document.querySelector(".js-grid-focused"));
     setTexts([...document.querySelectorAll(".js-grid-text")]);
-    console.log(texts);
   }, []);
 
   useFrame(() => {
