@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const array = [...document.querySelectorAll(".js-tile")];
     const loadedTextures = array.map((element) =>
-      textureLoader.load(element.getAttribute("data-src"))
+      textureLoader.load(element.getAttribute("data-src")),
     );
     setTextures(loadedTextures);
   }, []);
@@ -22,12 +22,12 @@ export default function Home() {
     <>
       <main>
         <article>
-          <div className="fixed bottom-0 left-0 h-extra-screen w-full pt-40 flex items-center justify-center bg-white overflow-hidden rounded-t-[4rem] js-t-mask js-grid">
-            <div className=" inset-x-[-150%] s:inset-x-[-50%] l:inset-x-[-30%] xl:inset-x-[-17.5%] top-0 gap-4 grid grid-cols-6 cursor-move js-grid-bounds">
+          <div className="h-extra-screen js-t-mask js-grid fixed bottom-0 left-0 flex w-full items-center justify-center overflow-hidden rounded-t-[4rem] bg-white pt-40">
+            <div className="js-grid-bounds inset-x-[-150%] top-0 grid cursor-move grid-cols-6 gap-4 s:inset-x-[-50%] l:inset-x-[-30%] xl:inset-x-[-17.5%]">
               {data.map((media, index) => (
                 <div key={index} data-index={index} className="relative">
                   <img
-                    className="absolute inset-5 js-tile "
+                    className="js-tile absolute inset-5"
                     data-index={index}
                     data-src={media.src}
                     src={media.src}
@@ -35,17 +35,17 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <div className="pointer-events-none	 relative z-10 flex flex-col items-center justify-center">
+            <div className="pointer-events-none relative z-10 flex flex-col items-center justify-center">
               <img
                 src="/src/assets/lathe-patterns/1.jpg"
-                className="invisible pointer-events-none h-[60rem] w-auto grid-focused js-grid-focused"
+                className="grid-focused js-grid-focused pointer-events-none invisible h-[60rem] w-auto"
               />
-              <div className="relative min-w-[24rem] h-[5rem] js-grid-content">
+              <div className="js-grid-content relative h-[5rem] min-w-[24rem]">
                 {data.map((item, index) => {
                   return (
                     <p
                       key={index}
-                      className="absolute top-[-1] left-0 w-full text-18 opacity-0 text-center text-md js-grid-text"
+                      className="text-18 js-grid-text absolute left-0 top-[-1] w-full text-center text-md opacity-0"
                     >
                       {item.text}
                     </p>
