@@ -14,6 +14,7 @@
     "gallery": "file:",
     "gsap": "^3.12.4",
     "normalize-wheel": "^1.0.1",
+    "prettier-plugin-tailwindcss": "^0.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.160.0",

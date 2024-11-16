@@ -7,15 +7,15 @@
   --aspect: 150%;
 
   --size: 1440;
-
 }
- @media screen and (max-width: 650px) {
+@media screen and (max-width: 650px) {
   :root {
-    --size: 375; 
-  } 
- } 
+    --size: 375;
+  }
+}
 
-main, article{
+main,
+article {
   position: fixed;
   top: 0;
   left: 0;
@@ -24,11 +24,11 @@ main, article{
   overflow: hidden;
 }
 
-.h-extra-screen{
+.h-extra-screen {
   height: calc((var(--vh) * 100) + 4rem);
 }
-.aspect{
-  padding-top: var(--aspect)
+.aspect {
+  padding-top: var(--aspect);
 }
 
 .canvas__wrapper {
@@ -40,7 +40,7 @@ main, article{
   pointer-events: none;
 }
 
-#canvas{
+#canvas {
   position: fixed;
   width: 100%;
   inset: 0;
@@ -49,12 +49,12 @@ html {
   font-size: calc(100vw / var(--size) * 10);
 }
 
-[data-src]{
+[data-src] {
   opacity: 0;
-  transition: opacity .5s ease
+  transition: opacity 0.5s ease;
 }
 
-.gl{
+.gl {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -63,5 +63,9 @@ html {
 }
 
 .grid-focused {
-  max-height: calc(var(--vh)*60);
+  max-height: calc(var(--vh) * 60);
+}
+
+.js-grid-text {
+  filter: grayscale(100%);
 }

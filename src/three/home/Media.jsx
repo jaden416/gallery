@@ -32,10 +32,8 @@ export default function Media({
   const animation = useRef({
     current: 1,
     target: 0,
-    ease: 0.1,
     gate: 0,
     position: 0.5,
-    text: 0,
     size: 0,
   });
 
@@ -119,7 +117,7 @@ export default function Media({
   }, [viewport, size]);
 
   useEffect(() => {
-    // these two statements only deal with the cards not clicked
+    // these two statements only deal with the cards that are not clicked
     if (focus.state && index !== focus.index)
       // show
       fade(0) && position(0) && gate(1);
@@ -162,8 +160,8 @@ export default function Media({
     if (focus.index === index)
       tl.current
         .clear()
-        .to(animation.current, { text: target })
-        .fromTo(text, { alpha: current, y: "3rem" }, { alpha: target, y: 0 });
+        .to(animation.current, { text: target, ease: "power2.out" })
+        .fromTo(text, { alpha: current, y: "1rem" }, { alpha: target, y: 0 });
 
     if (focus.prevIndex === index)
       tl.current
