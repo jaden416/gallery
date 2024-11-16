@@ -8,6 +8,7 @@ import normalizeWheel from "normalize-wheel";
 import useTouchEvents from "../../hooks/useTouchEvents";
 
 export default function Gallery({ textures }) {
+  const canvasRef = useRef([...document.getElementsByTagName("canvas")][0]);
   const [gallery, setGallery] = useState(null);
   const [medias, setMedias] = useState(null);
   const [texts, setTexts] = useState(null);
@@ -158,7 +159,7 @@ export default function Gallery({ textures }) {
   };
 
   useTouchEvents(onWheel, onTouchDown, onTouchMove, onTouchUp);
-  if (medias == null && texts == null) return null;
+  if (medias == null) return null;
 
   return (
     <>

@@ -1,4 +1,3 @@
-"use client";
 import { React, useEffect, useRef, useMemo } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
@@ -34,8 +33,9 @@ export default function Media({
     current: 1,
     target: 0,
     ease: 0.1,
-    initial: 0,
+    gate: 0,
     position: 0.5,
+    text: 0,
     size: 0,
   });
 
@@ -46,6 +46,9 @@ export default function Media({
     multiplier: 1,
   });
 
+  const time = useRef(0.35);
+
+  const tl = useRef(null);
   const stagger = offset(column);
 
   const { size, viewport } = useThree();
@@ -107,59 +110,86 @@ export default function Media({
     };
 
     mesh.current.index = index;
+    tl.current = gsap.timeline({
+      defaults: {
+        duration: time.current,
+        ease: "power3",
+      },
+    });
   }, [viewport, size]);
 
   useEffect(() => {
-    if (focus.state === false) reset();
+    // these two statements only deal with the cards not clicked
+    if (focus.state && index !== focus.index)
+      // show
+      fade(0) && position(0) && gate(1);
+    else if (
+      !focus.state &&
+      index !== focus.index &&
+      index !== focus.prevIndex &&
+      focus.prevIndex !== null
+    )
+      // hide
+      fade(1) && position(0.5) && gate(0);
 
-    if (focus.index === index) show();
-
-    if (focus.index !== index && focus.index != null) hide();
+    if (focus.state && index === focus.index)
+      // show
+      renderOrder(1) && position(1) && word(0, 1) && resize(1);
+    else if (!focus.state && index !== focus.index)
+      // hide
+      renderOrder(0) && position(0.5) && word(0, 1) && resize(0);
   }, [focus]);
 
-  function show() {
-    const tl = gsap.timeline();
-
-    gsap.to(animation.current, { initial: 1 });
-    gsap.to(mesh.current, { renderOrder: 1 });
-    tl.to(animation.current, {
-      size: 1,
-      position: 1,
-      duration: 0.35,
-      ease: "power3",
-    })
-    .fromTo(
-      text,
-      {
-        alpha: 0,
-        y: "3rem",
-      },
-      {
-        alpha: 1,
-        y: 0,
-      },
-      0.2
-    );
-  }
-
-  function hide() {
-    gsap.to(animation.current, { initial: 1 });
-    gsap.to(opacity.current, { current: 0, duration: 0.35, ease: "power3" });
-    gsap.to(animation.current, { position: 0, duration: 0.35, ease: "power3" });
-  }
-
-  function reset() {
-    if (animation.current.position === 1) gsap.to(text, { alpha: 0, y: 0 });
-
-    gsap.to(opacity.current, { current: 1, duration: 0.35, ease: "power3" });
-    gsap.to(animation.current, {
-      position: 0.5,
-      size: 0,
-      duration: 0.35,
+  function fade(target) {
+    gsap.to(opacity.current, {
+      current: target,
+      duration: time.current,
       ease: "power3",
     });
-    gsap.to(mesh.current, { renderOrder: 0 });
-    gsap.to(animation.current, { initial: 0 });
+    return 1;
+  }
+
+  function position(target) {
+    gsap.to(animation.current, {
+      position: target,
+      duration: time.current,
+      ease: "power3",
+    });
+    return 1;
+  }
+
+  function word(current, target) {
+    if (focus.index === index)
+      tl.current
+        .clear()
+        .to(animation.current, { text: target })
+        .fromTo(text, { alpha: current, y: "3rem" }, { alpha: target, y: 0 });
+
+    if (focus.prevIndex === index)
+      tl.current
+        .clear()
+        .to(animation.current, { text: current })
+        .to(text, { alpha: 0 }, 0.2);
+
+    return 1;
+  }
+
+  function resize(target) {
+    gsap.to(animation.current, {
+      size: target,
+      duration: time.current,
+      ease: "power3",
+    });
+  }
+
+  function renderOrder(target) {
+    gsap.to(mesh.current, { renderOrder: target });
+    return 1;
+  }
+
+  function gate(target) {
+    gsap.to(animation.current, { gate: target });
+    return 1;
   }
 
   function updateScale() {
@@ -231,7 +261,7 @@ export default function Media({
           extra.current.y,
           stagger,
           y
-        ), // initial
+        ), // gate
         viewport.height / 2 -
           mesh.current.scale.y / 2 -
           (focusBounds.current.top / size.height) * viewport.height, // center
@@ -257,7 +287,7 @@ export default function Media({
     updateY(scroll.y.current * 1.5, stagger);
     updateX(scroll.x.current * 1.5);
 
-    if (animation.current.initial === 0) {
+    if (animation.current.gate === 0) {
       if (
         scroll.y.direction === "top" &&
         mesh.current.position.y - planeOffset.y > viewportOffset.y
