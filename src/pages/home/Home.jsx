@@ -38,7 +38,7 @@ export default function Home() {
             </div>
             <div className="pointer-events-none relative z-10 flex flex-col items-center justify-center">
               <img
-                src="/lathe-patterns/1.jpg"
+                src="/gallery/lathe-patterns/1.jpg"
                 className="grid-focused js-grid-focused pointer-events-none invisible h-[60rem] w-auto"
               />
               <div className="js-grid-content relative h-[5rem] min-w-[24rem]">
