@@ -58,13 +58,13 @@ export default function Gallery({ textures }) {
     scroll.current.y.current = gsap.utils.interpolate(
       scroll.current.y.current,
       scroll.current.y.target,
-      scroll.current.y.ease
+      scroll.current.y.ease,
     );
 
     scroll.current.x.current = gsap.utils.interpolate(
       scroll.current.x.current,
       scroll.current.x.target,
-      scroll.current.x.ease
+      scroll.current.x.ease,
     );
 
     if (scroll.current.x.current > scroll.current.x.last) {
