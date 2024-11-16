@@ -45,7 +45,7 @@ export default function Home() {
                   return (
                     <p
                       key={index}
-                      className="absolute top-4 left-0 w-full text-18 opacity-0 text-center text-md js-grid-text"
+                      className="absolute top-[-1] left-0 w-full text-18 opacity-0 text-center text-md js-grid-text"
                     >
                       {item.text}
                     </p>
