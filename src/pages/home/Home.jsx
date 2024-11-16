@@ -23,15 +23,16 @@ export default function Home() {
       <main>
         <article>
           <div className="h-extra-screen js-t-mask js-grid fixed bottom-0 left-0 flex w-full items-center justify-center overflow-hidden rounded-t-[4rem] bg-white pt-40">
-            <div className="js-grid-bounds inset-x-[-150%] top-0 grid cursor-move grid-cols-6 gap-4 s:inset-x-[-50%] l:inset-x-[-30%] xl:inset-x-[-17.5%]">
+            <div className="js-grid-bounds absolute inset-x-[-150%] top-0 grid cursor-move grid-cols-6 s:inset-x-[-50%] l:inset-x-[-30%] xl:inset-x-[-17.5%]">
               {data.map((media, index) => (
                 <div key={index} data-index={index} className="relative">
-                  <img
-                    className="js-tile absolute inset-5"
-                    data-index={index}
-                    data-src={media.src}
-                    src={media.src}
-                  />
+                  <div className="aspect">
+                    <div
+                      className="js-tile absolute inset-5"
+                      data-index={index}
+                      data-src={media.src}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
