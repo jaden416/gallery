@@ -119,4 +119,34 @@ export const urls = [
     alt: "idk",
     text: "Albumen silver print",
   },
+  {
+    src: "/src/assets/lathe-patterns/25.jpg",
+    alt: "idk",
+    text: "Albumen silver print",
+  },
+  {
+    src: "/src/assets/lathe-patterns/26.jpg",
+    alt: "idk",
+    text: "Albumen silver print",
+  },
+  {
+    src: "/src/assets/lathe-patterns/27.jpg",
+    alt: "idk",
+    text: "Albumen silver print",
+  },
+  {
+    src: "/src/assets/lathe-patterns/28.jpg",
+    alt: "idk",
+    text: "Albumen silver print",
+  },
+  {
+    src: "/src/assets/lathe-patterns/29.jpg",
+    alt: "idk",
+    text: "Albumen silver print",
+  },
+  {
+    src: "/src/assets/lathe-patterns/30.jpg",
+    alt: "idk",
+    text: "Albumen silver print",
+  },
 ];
