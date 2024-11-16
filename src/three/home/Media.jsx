@@ -134,10 +134,10 @@ export default function Media({
 
     if (focus.state && index === focus.index)
       // show
-      renderOrder(1) && position(1) && word(0, 1) && resize(1);
+      renderOrder(1) && position(1) && text(0, 1) && resize(1);
     else if (!focus.state && index !== focus.index)
       // hide
-      renderOrder(0) && position(0.5) && word(0, 1) && resize(0);
+      renderOrder(0) && position(0.5) && text(0, 1) && resize(0);
   }, [focus]);
 
   function fade(target) {
@@ -158,7 +158,7 @@ export default function Media({
     return 1;
   }
 
-  function word(current, target) {
+  function text(current, target) {
     if (focus.index === index)
       tl.current
         .clear()
