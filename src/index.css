@@ -13,7 +13,9 @@
     --size: 375;
   }
 }
-
+main {
+  background-color: #ede9e5;
+}
 main,
 article {
   position: fixed;
