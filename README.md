@@ -38,11 +38,11 @@ Use the useThree() and destructure the size and viewport property from it. You w
 ```javascript
 {
 uniform: {
-someVar:{ value: }
-
+someVar: { value: number }
 },
-fragmentShader: ,
-vertexShader:
+
+fragmentShader: string,
+vertexShader: string
 }
 ```
 
@@ -100,20 +100,21 @@ First create a scroll ref and in the home file. This will be an object that cont
 
 ```javascript
 {
-current: this is the journey property
-target: this is the destination property
-last: this keeps track of the current value.
-position:
-ease: this is the property that makes the animation very smooth
-direction: this compares the current and the last property and returns a string that is either ‘up’ or ‘down’
+current: this is the journey property,
+target: this is the destination property,
+last: this keeps track of the current value.,
+ease: this is the property that makes the animation very smooth,
+direction: this compares the current and the last property and returns a string that is either ‘up’ or ‘down’,
 }
+```
 
 We will also need a speed ref object that will contain the following properties:
 
+```javascript
 {
-current:
-target:
-ease:
+  current: this is the journey property,
+  target: number
+  ease: number
 }
 ```
 
@@ -126,7 +127,9 @@ Within the useFrame function inside the home file, you will want to increment (i
 There are many ways to do this in animation but the best way to do it smoothly is by using [lerp](https://rachsmith.com/lerp/).
 To do this mathematically the formula is:
 
+```javascript
 target = (target - current) \* 0.001;
+```
 
 Keep in mind the .001 can be any number but that number simply controls the speed of the scroll.
 
@@ -144,15 +147,19 @@ In the media file, you will need to create a new useRef variable called extra. T
 
 Another important ref variable we need is the variable that gets the height of the gallery. Set this variable to 0 initially. Then in the useEffect function you must get the height of the gallery and then convert it into three.js dimensions. To obtain a height of a DOM element you can use the clientHeight property. The three.js conversion calculation should look similar to this:
 
+```javascript
 galleryElement.clientHeight / size.height \* viewport.height
+```
 
 To do just add extra.current to the rest of the calculation
 
 Inside of the useFrame function body create two offset variables one that holds the plane scale and another that holds the viewport width. Remember two divide both of them by two (because of cartesian rules):
 
-planeOffset: the variable that holds the plane’s height offset. Will be used to tell the DOM when the plane’s border (whether it's the bottom or top) has left the viewport.
+```javascript
+planeOffset: "the variable that holds the plane’s height offset. Will be used to tell the DOM when the plane’s border (whether it's the bottom or top) has left the viewport.";
 
-viewportOffset: It is essentially the same thing as the planeOffset variable but instead it holds the offset for the viewport.
+viewportOffset: "It is essentially the same thing as the planeOffset variable but instead it holds the offset for the viewport.";
+```
 
 Another already defined variable that is extremely important when locating where the plane is positioned is the mesh.current.position.y. This variable alongside the planeOffset will tell you where the top and bottom border is at, at all times.
 
@@ -160,7 +167,7 @@ Mesh.current.position.y is essentially at the center of the plane so in order to
 
 The scroll.direction variable is also important when deciding what is to be done once a plane leaves the viewport. Depending on what direction your plane is heading, you would have to either subtract or add the galleryHeight to the extra variable.
 
-Fourth Objective: Now the next step is to add the scroll event listeners to the scroll and apply the uSpeed property at the same time. To set up the event listeners we are going to use a custom hook that adds all the touch events to the canvas for us. For the sake of brevity, look inside the repo and find the hook folder that has the function and copy the file.
+## Fourth Goal: Now the next step is to add the scroll event listeners to the scroll and apply the uSpeed property at the same time. To set up the event listeners we are going to use a custom hook that adds all the touch events to the canvas for us. For the sake of brevity, look inside the repo and find the hook folder that has the function and copy the file.
 
 We are going to want to create a function that listens for a wheel scroll. Inside the home file you need to import [normalizeWheel](https://www.npmjs.com/package/normalize-wheel) from the normalize-wheel package and the useTouchEvents custom hook from the hooks folder.
 
@@ -182,13 +189,15 @@ The target of the speed will be based off of the scroll properties due to how it
 
 Now make sure you pass down the speed ref into the media array and inside the Media file go inside the useFrame function and assign the speed.current to the uStrength mesh uniform value (look at how we updated the other mesh uniforms in that file as a refresher).
 
-Fifth Objective: The last objective is to add the tap events for swiping. You will need three event listeners for this: touchDown, touchMove, touchUp.
+## Fifth Goal: The last objective is to add the tap events for swiping. You will need three event listeners for this: touchDown, touchMove, touchUp.
 
 The ref variable you will need is a binary variable that tells the DOM whether the user is touching the screen. It will initially be false at first. You will also need to add two more properties inside of the scroll ref variable: start and position.
 
-scroll.current.start: This will store the position the user clicked on the screen. It will be the initial position.
+```javascript
+scroll.current.start: "This will store the position the user clicked on the screen. It will be the initial position."
 
-scroll.current.position: stores the scroll.current property when the user touches the screen.
+scroll.current.position: "stores the scroll.current property when the user touches the screen."
+```
 
 Now here is how you implement the three touch functions. Make sure each of these functions has an event argument except onTouchup
 
