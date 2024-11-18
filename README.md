@@ -1,5 +1,7 @@
 # React Three Fiber Gallery
 
+This project was inspired by sites like [kirschberg](https://kirschberg.co.nz/archive) and [public.work](https://public.work/).
+
 ## First Goal: Create a mesh for each image on the home page.
 
 ### Objective 1: Inside the home file, you need to create an array of all the images within the HTML and then map that array inside your return statement. Hint: The map and one of the document.query functions are your friend.
