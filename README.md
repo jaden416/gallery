@@ -35,7 +35,7 @@ Use the Three.js [RawShaderMaterial](https://threejs.org/docs/?q=raw#api/en/mate
 
 Use the useThree() and destructure the size and viewport property from it. You will need this when you are sizing your planes
 
-```
+```javascript
 {
 uniform: {
 someVar:{ value: }
@@ -98,7 +98,7 @@ As you can see it looks like a stack of cards. To fix this you must multiply it 
 
 First create a scroll ref and in the home file. This will be an object that contains the following properties:
 
-```
+```javascript
 {
 current: this is the journey property
 target: this is the destination property
