@@ -35,6 +35,7 @@ Use the Three.js [RawShaderMaterial](https://threejs.org/docs/?q=raw#api/en/mate
 
 Use the useThree() and destructure the size and viewport property from it. You will need this when you are sizing your planes
 
+```
 {
 uniform: {
 someVar:{ value: }
@@ -43,6 +44,7 @@ someVar:{ value: }
 fragmentShader: ,
 vertexShader:
 }
+```
 
 You should store this in a variable within your function body instead of the return statement.
 
@@ -95,6 +97,8 @@ As you can see it looks like a stack of cards. To fix this you must multiply it 
 ## Second Goal: Now that we have the scale and position of each image in three.js it is now time for the fun part. We are going to add the animation to the gallery.
 
 First create a scroll ref and in the home file. This will be an object that contains the following properties:
+
+```
 {
 current: this is the journey property
 target: this is the destination property
@@ -111,6 +115,8 @@ current:
 target:
 ease:
 }
+```
+
 Lastly, you will want to create a velocity ref variable that only holds a number. Let's go with -2.
 
 To animate the scroll, we must use the three.js function useFrame in both files. Think of useFrame as Three.js's way of animating scenes.
